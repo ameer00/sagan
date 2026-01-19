@@ -6,7 +6,7 @@
     - [x] Sub-task: Update CI/CD configuration files (e.g., `concourse/pipeline.yml`) to use a JDK 17 image.
 - [x] Task: specific - Verify build with Java 17 (pre-upgrade).
     - [x] Sub-task: Run `./gradlew clean build` with JDK 17 to ensure the current Spring Boot 2.7 app compiles on the newer JDK.
-- [~] Task: Conductor - User Manual Verification 'Java 17 Preparation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Java 17 Preparation' (Protocol in workflow.md) [checkpoint: b233b05]
 
 ## Phase 2: Core Framework Upgrade & Jakarta Migration
 - [ ] Task: specific - Bump Spring Boot version to latest 3.x.
