@@ -23,12 +23,12 @@
 - [x] Task: specific - Configure Actuator Endpoints.
     - [x] Sub-task: Create/Update `application.yml` (or properties) to expose `health`, `info`, `metrics`.
     - [x] Sub-task: Verify security settings (ensure sensitive endpoints are protected or internal-only).
-- [~] Task: specific - Implement Redis Health Indicator.
-    - [ ] Sub-task: Create `RedisHealthIndicator` test.
-    - [ ] Sub-task: Implement the indicator to check Redis connection.
-- [ ] Task: specific - Implement GitHub API Health Indicator (if applicable).
-    - [ ] Sub-task: Check if `sagan-site` calls GitHub. If so, add health check.
-- [ ] Task: Conductor - User Manual Verification 'Observability Enhancements' (Protocol in workflow.md)
+- [x] Task: specific - Implement Redis Health Indicator.
+    - [x] Sub-task: Create `RedisHealthIndicator` test.
+    - [x] Sub-task: Implement the indicator to check Redis connection.
+- [x] Task: specific - Implement GitHub API Health Indicator (if applicable).
+    - [x] Sub-task: Check if `sagan-site` calls GitHub. If so, add health check.
+- [~] Task: Conductor - User Manual Verification 'Observability Enhancements' (Protocol in workflow.md)
 
 ## Phase 4: Final Verification
 - [ ] Task: specific - Full System Regression Test.
