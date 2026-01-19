@@ -1,13 +1,12 @@
 package sagan.site.team;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Type;
 
 import org.springframework.util.StringUtils;
 
@@ -27,8 +26,7 @@ public class MemberProfile {
     @Column(nullable = true)
     private String location;
 
-    @Column(nullable = true)
-    @Type(type = "text")
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String bio;
 
     @Column(nullable = true)
@@ -58,8 +56,7 @@ public class MemberProfile {
     @Column
     private GeoLocation geoLocation;
 
-    @Column
-    @Type(type = "text")
+    @Column(columnDefinition = "TEXT")
     private String videoEmbeds;
 
     @Column

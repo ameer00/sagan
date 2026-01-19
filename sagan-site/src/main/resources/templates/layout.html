@@ -276,7 +276,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class='right' data-th-unless="${#httpServletRequest.requestURI == '/support'} or ${#httpServletRequest.requestURI.contains('/blog')}">
+                    <div class='right' data-th-unless="${currentPath == '/support'} or ${currentPath.contains('/blog')}">
                         <h2 class='h3 mb-2 antialiased hide'>Get the Spring newsletter</h2>
                         <h2 class='h3 mb-2 antialiased confirmation'>Thank you!</h2>
                         <script src="//app-sj05.marketo.com/js/forms2/js/forms2.min.js"></script>

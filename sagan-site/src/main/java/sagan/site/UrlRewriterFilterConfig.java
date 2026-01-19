@@ -1,6 +1,6 @@
 package sagan.site;
 
-import sagan.site.support.rewrite.TuckeyRewriteFilter;
+import org.tuckey.web.filters.urlrewrite.UrlRewriteFilter;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,7 @@ public class UrlRewriterFilterConfig {
 	public FilterRegistrationBean rewriteFilterConfig() {
 		FilterRegistrationBean reg = new FilterRegistrationBean();
 		reg.setName(REWRITE_FILTER_NAME);
-		reg.setFilter(new TuckeyRewriteFilter());
+		reg.setFilter(new UrlRewriteFilter());
 		reg.addInitParameter("confPath", REWRITE_FILTER_CONF_PATH);
 		reg.addInitParameter("confReloadCheckInterval", "-1");
 		reg.addInitParameter("statusPath", "/redirect");

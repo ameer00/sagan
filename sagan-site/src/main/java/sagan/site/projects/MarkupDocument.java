@@ -1,6 +1,6 @@
 package sagan.site.projects;
 
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
 
 /**
  * Document written using a markup language (such as Asciidoctor)

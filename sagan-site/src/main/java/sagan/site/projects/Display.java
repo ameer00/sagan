@@ -1,6 +1,6 @@
 package sagan.site.projects;
 
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
 
 /**
  * Project information useful for displaying the project on the website

@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
 import sagan.site.TestSecurityConfig;
+import sagan.site.SecurityConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,14 +18,16 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.util.StreamUtils;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 /**
  * Integration tests for {@link DocsWebhookController}.
  */
 @WebMvcTest(value = DocsWebhookController.class, properties = "sagan.site.github.webhook-token=accesstoken")
-@Import(TestSecurityConfig.class)
+@Import({TestSecurityConfig.class, SecurityConfig.class})
 public class DocsWebhookControllerTests {
 
 	@MockBean
@@ -41,15 +44,16 @@ public class DocsWebhookControllerTests {
 
 	@Test
 	void missingHeadersShouldBeRejected() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides")
+		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides").with(csrf())
 				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
 				.content("{\"message\": \"this is a test\""))
+				.andDo(print())
 				.andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 
 	@Test
 	void invalidHmacSignatureShouldBeRejected() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides")
+		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides").with(csrf())
 				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
 				.header("X-Hub-Signature", "sha1=wronghmacvalue")
 				.header("X-GitHub-Event", "push")
@@ -60,7 +64,7 @@ public class DocsWebhookControllerTests {
 
 	@Test
 	void pingEventShouldHaveResponse() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides")
+		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides").with(csrf())
 				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
 				.header("X-Hub-Signature", "sha1=9E629DCCF4472F600D048510354BE400B8EB25CB")
 				.header("X-GitHub-Event", "ping")
@@ -71,7 +75,7 @@ public class DocsWebhookControllerTests {
 
 	@Test
 	void invalidJsonPushEventShouldBeRejected() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides")
+		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides").with(csrf())
 				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
 				.header("X-Hub-Signature", "sha1=5df34e8979dc9a831873a42c6e172546f6937190")
 				.header("X-GitHub-Event", "push")
@@ -82,7 +86,7 @@ public class DocsWebhookControllerTests {
 
 	@Test
 	void shouldEvictGuideFromCache() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides")
+		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides").with(csrf())
 				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
 				.header("X-Hub-Signature", "sha1=848E37804A9EC374FE1B8596AB25B15E98928C98")
 				.header("X-GitHub-Event", "push")
@@ -94,7 +98,7 @@ public class DocsWebhookControllerTests {
 
 	@Test
 	void shouldEvictTutorialFromCache() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides")
+		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides").with(csrf())
 				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
 				.header("X-Hub-Signature", "sha1=751B1641F223E44119DD3F4A8BBAE7680ABDEF45")
 				.header("X-GitHub-Event", "push")
@@ -106,7 +110,7 @@ public class DocsWebhookControllerTests {
 
 	@Test
 	void shouldEvictTopicalFromCache() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides")
+		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/docs/guides").with(csrf())
 				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
 				.header("X-Hub-Signature", "sha1=84EB536B625A88DEB20F608F4510DCE60E81ADCA")
 				.header("X-GitHub-Event", "push")

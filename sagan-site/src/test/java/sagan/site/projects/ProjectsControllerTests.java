@@ -11,6 +11,8 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import sagan.site.TestSecurityConfig;
+import sagan.site.SecurityConfig;
+import sagan.site.support.GlobalControllerAdvice;
 import sagan.site.guides.GettingStartedGuides;
 import sagan.site.guides.GuideHeader;
 import sagan.site.guides.Topicals;
@@ -32,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ProjectsController.class)
 @TestPropertySource(properties = "spring.profiles.active=standalone")
-@Import(TestSecurityConfig.class)
+@Import({TestSecurityConfig.class, SecurityConfig.class, GlobalControllerAdvice.class})
 public class ProjectsControllerTests {
 	@MockBean
 	private ProjectMetadataService projectMetadataService;

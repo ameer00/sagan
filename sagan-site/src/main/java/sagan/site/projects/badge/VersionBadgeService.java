@@ -7,8 +7,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
 import org.xmlbeam.XBProjector;
 import org.xmlbeam.XBProjector.Flags;

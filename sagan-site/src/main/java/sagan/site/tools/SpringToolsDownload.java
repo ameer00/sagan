@@ -1,7 +1,7 @@
 package sagan.site.tools;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 /**
  * Spring Tools download information for a given platform and operating system

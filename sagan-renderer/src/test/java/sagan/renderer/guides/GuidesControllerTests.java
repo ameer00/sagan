@@ -22,6 +22,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,7 +61,8 @@ public class GuidesControllerTests {
 		given(this.githubClient.fetchOrgRepositories("spring-guides"))
 				.willReturn(Arrays.asList(restService, securingWeb));
 
-		this.mvc.perform(get("/guides/"))
+		this.mvc.perform(get("/guides"))
+				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$._embedded.guides[0].name").value("rest-service"))
 				.andExpect(jsonPath("$._embedded.guides[0].projects[0]").value("spring-boot"))
@@ -86,7 +88,7 @@ public class GuidesControllerTests {
 		given(this.githubClient.fetchOrgRepositories("spring-guides"))
 				.willReturn(Arrays.asList(deprecatedGuide));
 
-		this.mvc.perform(get("/guides/"))
+		this.mvc.perform(get("/guides"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$._embedded").doesNotExist());
 	}

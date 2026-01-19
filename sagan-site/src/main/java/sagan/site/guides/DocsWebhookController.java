@@ -5,11 +5,12 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
 import java.util.Map;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
+import java.util.HexFormat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.logging.Log;
@@ -37,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Github requests are signed with a shared secret, using an HMAC sha-1 algorithm.
  */
 @RestController
-@RequestMapping("/webhook/docs/")
+@RequestMapping("/webhook/docs")
 class DocsWebhookController {
 
 	private static final Log logger = LogFactory.getLog(DocsWebhookController.class);
@@ -108,7 +109,7 @@ class DocsWebhookController {
 
 	private void verifyHmacSignature(String message, String signature) {
 		byte[] sig = hmac.doFinal(message.getBytes(CHARSET));
-		String computedSignature = "sha1=" + DatatypeConverter.printHexBinary(sig);
+		String computedSignature = "sha1=" + HexFormat.of().formatHex(sig);
 		if (!computedSignature.equalsIgnoreCase(signature)) {
 			throw new WebhookAuthenticationException(computedSignature, signature);
 		}

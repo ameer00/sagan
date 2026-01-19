@@ -2,10 +2,9 @@ package sagan.site.team.support;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.Optional;
-
-import javax.xml.bind.DatatypeConverter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,8 +93,8 @@ public class TeamService {
 			try {
 				MessageDigest digest = MessageDigest.getInstance("MD5");
 				digest.update(profile.getGravatarEmail().getBytes());
-				String hashedEmail = DatatypeConverter.printHexBinary(digest.digest());
-            	profile.setAvatarUrl(String.format("https://gravatar.com/avatar/%s", hashedEmail.toLowerCase()));
+				String hashedEmail = HexFormat.of().formatHex(digest.digest());
+				profile.setAvatarUrl(String.format("https://gravatar.com/avatar/%s", hashedEmail.toLowerCase()));
 			}
 			catch (NoSuchAlgorithmException e) {
 				logger.error("Could not find MD5 MessageDigest");

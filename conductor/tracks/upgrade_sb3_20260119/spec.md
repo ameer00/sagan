@@ -1,10 +1,10 @@
 # Track Specification: Upgrade to Spring Boot 3.x
 
 ## Overview
-This track focuses on upgrading the Sagan reference application from Spring Boot 2.7.18 to the latest stable Spring Boot 3.x version. This is a significant maintenance task that includes a Java version upgrade and the Jakarta EE package migration.
+This track focuses on upgrading the Sagan reference application from Spring Boot 2.7.18 to the latest stable Spring Boot 3.5.x version. This is a significant maintenance task that includes a Java version upgrade and the Jakarta EE package migration.
 
 ## Goals
-- Upgrade Spring Boot to the latest stable 3.x release.
+- Upgrade Spring Boot to the latest stable 3.5.x release.
 - Upgrade Java source and target compatibility to Java 17.
 - Migrate all `javax.*` imports to `jakarta.*` where required by Jakarta EE 9/10.
 - Update all managed and third-party dependencies to compatible versions.

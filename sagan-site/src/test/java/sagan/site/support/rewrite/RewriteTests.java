@@ -9,8 +9,8 @@ import org.springframework.mock.web.*;
 import org.tuckey.web.filters.urlrewrite.UrlRewriteFilter;
 import sagan.site.UrlRewriterFilterConfig;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 
 import java.io.IOException;
 import java.net.URI;

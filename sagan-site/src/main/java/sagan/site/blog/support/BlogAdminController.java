@@ -4,7 +4,7 @@ import java.security.Principal;
 import java.util.Collections;
 import java.util.TimeZone;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import sagan.site.blog.BlogService;
 import sagan.site.blog.Post;
