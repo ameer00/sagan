@@ -20,10 +20,10 @@
 - [x] Task: Conductor - User Manual Verification 'Core Dependency Updates' (Protocol in workflow.md) [checkpoint: ec30623]
 
 ## Phase 3: Observability Enhancements
-- [ ] Task: specific - Configure Actuator Endpoints.
-    - [ ] Sub-task: Create/Update `application.yml` (or properties) to expose `health`, `info`, `metrics`.
-    - [ ] Sub-task: Verify security settings (ensure sensitive endpoints are protected or internal-only).
-- [ ] Task: specific - Implement Redis Health Indicator.
+- [x] Task: specific - Configure Actuator Endpoints.
+    - [x] Sub-task: Create/Update `application.yml` (or properties) to expose `health`, `info`, `metrics`.
+    - [x] Sub-task: Verify security settings (ensure sensitive endpoints are protected or internal-only).
+- [~] Task: specific - Implement Redis Health Indicator.
     - [ ] Sub-task: Create `RedisHealthIndicator` test.
     - [ ] Sub-task: Implement the indicator to check Redis connection.
 - [ ] Task: specific - Implement GitHub API Health Indicator (if applicable).
