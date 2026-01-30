@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
+import java.util.HexFormat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.logging.Log;
@@ -27,12 +27,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Controller that handles requests from GitHub webhook set up at <a
- * href="https://github.com/spring-guides/">the getting started, tutorial and topical guides
- * repository</a> and clears the rendered docs from cache.
+ * Controller that handles requests from GitHub webhook set up at
+ * <a href="https://github.com/spring-guides/">the getting started, tutorial and topical
+ * guides repository</a> and clears the rendered docs from cache.
  * <p>
- * This allows to keep the rendered versions of those docs in cache until new changes
- * have been pushed to the repository.
+ * This allows to keep the rendered versions of those docs in cache until new changes have
+ * been pushed to the repository.
  * <p>
  * Github requests are signed with a shared secret, using an HMAC sha-1 algorithm.
  */
@@ -59,11 +59,11 @@ class DocsWebhookController {
 	private final Mac hmac;
 
 	@Autowired
-	public DocsWebhookController(ObjectMapper objectMapper,
-			Tutorials tutorials,
-			GettingStartedGuides gettingStartedGuides,
-			Topicals topicals,
-			SiteProperties properties)
+	public DocsWebhookController(	ObjectMapper objectMapper,
+									Tutorials tutorials,
+									GettingStartedGuides gettingStartedGuides,
+									Topicals topicals,
+									SiteProperties properties)
 			throws NoSuchAlgorithmException, InvalidKeyException {
 		this.objectMapper = objectMapper;
 		this.tutorials = tutorials;
@@ -71,7 +71,8 @@ class DocsWebhookController {
 		this.topicals = topicals;
 
 		// initialize HMAC with SHA1 algorithm and secret
-		SecretKeySpec secret = new SecretKeySpec(properties.getGithub().getWebhookToken().getBytes(CHARSET), HMAC_ALGORITHM);
+		SecretKeySpec secret = new SecretKeySpec(properties.getGithub().getWebhookToken().getBytes(CHARSET),
+				HMAC_ALGORITHM);
 		hmac = Mac.getInstance(HMAC_ALGORITHM);
 		hmac.init(secret);
 	}
@@ -88,11 +89,15 @@ class DocsWebhookController {
 		return ResponseEntity.badRequest().body("{ \"message\": \"Bad Request\" }");
 	}
 
-	@PostMapping(path = "guides",
-			consumes = "application/json", produces = "application/json")
-	public ResponseEntity<String> processGuidesUpdate(@RequestBody String payload,
-			@RequestHeader("X-Hub-Signature") String signature,
-			@RequestHeader(name = "X-GitHub-Event", required = false, defaultValue = "push") String event) throws IOException {
+	@PostMapping(	path = "guides",
+					consumes = "application/json",
+					produces = "application/json")
+	public ResponseEntity<String> processGuidesUpdate(	@RequestBody String payload,
+														@RequestHeader("X-Hub-Signature") String signature,
+														@RequestHeader(	name = "X-GitHub-Event",
+																		required = false,
+																		defaultValue = "push") String event)
+			throws IOException {
 
 		verifyHmacSignature(payload, signature);
 		if (PING_EVENT.equals(event)) {
@@ -108,7 +113,7 @@ class DocsWebhookController {
 
 	private void verifyHmacSignature(String message, String signature) {
 		byte[] sig = hmac.doFinal(message.getBytes(CHARSET));
-		String computedSignature = "sha1=" + DatatypeConverter.printHexBinary(sig);
+		String computedSignature = "sha1=" + HexFormat.of().formatHex(sig);
 		if (!computedSignature.equalsIgnoreCase(signature)) {
 			throw new WebhookAuthenticationException(computedSignature, signature);
 		}
@@ -122,8 +127,7 @@ class DocsWebhookController {
 				logger.info("Received new webhook payload for push with head_commit message: "
 						+ headCommitMap.get("message"));
 			}
-		}
-		else {
+		} else {
 			logger.info("Received new webhook payload for push, but with no head_commit");
 		}
 	}

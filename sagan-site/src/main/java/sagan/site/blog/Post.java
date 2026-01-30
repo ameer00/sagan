@@ -1,11 +1,10 @@
 package sagan.site.blog;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Type;
 import org.springframework.util.StringUtils;
 import sagan.site.team.MemberProfile;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
@@ -38,16 +37,13 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private PostFormat format;
 
-    @Column(nullable = false)
-    @Type(type = "text")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String rawContent;
 
-    @Column(nullable = false)
-    @Type(type = "text")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String renderedContent;
 
-    @Column(nullable = false)
-    @Type(type = "text")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String renderedSummary;
 
     @Column(nullable = false)

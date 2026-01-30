@@ -9,9 +9,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.BiConsumer;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
-import javax.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.OneToMany;
 
 import org.hibernate.annotations.SortNatural;
 import sagan.site.projects.support.SupportPolicy;

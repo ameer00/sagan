@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ProjectsController.class)
 @TestPropertySource(properties = "spring.profiles.active=standalone")
-@Import(TestSecurityConfig.class)
+@Import({ TestSecurityConfig.class, sagan.site.SecurityConfig.class, sagan.site.MvcConfig.class })
 public class ProjectsControllerTests {
 	@MockBean
 	private ProjectMetadataService projectMetadataService;
@@ -97,9 +97,11 @@ public class ProjectsControllerTests {
 		given(projectMetadataService.fetchAllProjects()).willReturn(Arrays.asList(this.springBoot, this.springData));
 		given(projectMetadataService.fetchFullProject("spring-boot")).willReturn(this.springBoot);
 		given(projectMetadataService.fetchFullProject("spring-data")).willReturn(this.springData);
-		given(projectMetadataService.fetchActiveProjectsTree()).willReturn(Arrays.asList(this.springBoot, this.springData));
+		given(projectMetadataService.fetchActiveProjectsTree()).willReturn(Arrays.asList(this.springBoot,
+				this.springData));
 		given(projectMetadataService.getAllGroups()).willReturn(this.projectGroups);
-		given(projectMetadataService.fetchTopLevelProjectsWithGroups()).willReturn(Arrays.asList(this.springBoot, this.springData));
+		given(projectMetadataService.fetchTopLevelProjectsWithGroups()).willReturn(Arrays.asList(this.springBoot,
+				this.springData));
 	}
 
 	@Test
@@ -108,7 +110,8 @@ public class ProjectsControllerTests {
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("project", this.springBoot))
 				.andExpect(model().attribute("projects", Matchers.contains(this.springBoot, this.springData)))
-				.andExpect(model().attribute("projectStackOverflow", "https://stackoverflow.com/questions/tagged/spring-boot"));
+				.andExpect(model().attribute("projectStackOverflow",
+						"https://stackoverflow.com/questions/tagged/spring-boot"));
 	}
 
 	@Test
@@ -117,7 +120,8 @@ public class ProjectsControllerTests {
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("project", this.springData))
 				.andExpect(model().attribute("projects", Matchers.contains(this.springBoot, this.springData)))
-				.andExpect(model().attribute("projectStackOverflow", "https://stackoverflow.com/questions/tagged/spring-data+or+spring-data-commons"));
+				.andExpect(model().attribute("projectStackOverflow",
+						"https://stackoverflow.com/questions/tagged/spring-data+or+spring-data-commons"));
 	}
 
 	@Test
@@ -125,7 +129,8 @@ public class ProjectsControllerTests {
 		this.mvc.perform(get("/projects/spring-boot"))
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("currentRelease", Optional.of(this.currentRelease)))
-				.andExpect(model().attribute("otherReleases", Matchers.hasItems(this.anotherRelease, this.snapshotRelease)));
+				.andExpect(model().attribute("otherReleases", Matchers.hasItems(this.anotherRelease,
+						this.snapshotRelease)));
 	}
 
 	@Test
@@ -144,8 +149,7 @@ public class ProjectsControllerTests {
 		this.mvc.perform(get("/projects"))
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("groups", this.projectGroups))
-				.andExpect(model().attribute("featured", Matchers.contains(this.springBoot)))
-		;
+				.andExpect(model().attribute("featured", Matchers.contains(this.springBoot)));
 	}
 
 }

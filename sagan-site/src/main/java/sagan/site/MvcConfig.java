@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import sagan.site.support.StaticPagePathFinder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -11,33 +12,36 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Site-wide MVC infrastructure configuration. See also {@link SiteApplication} where certain
- * additional web infrastructure is configured.
+ * Site-wide MVC infrastructure configuration. See also {@link SiteApplication} where
+ * certain additional web infrastructure is configured.
  */
 @Configuration
-public class MvcConfig implements WebMvcConfigurer {
-
-	private StaticPagePathFinder staticPagePathFinder;
+public class MvcConfig {
 
 	@Bean
 	public StaticPagePathFinder staticPagePathFinder(ResourcePatternResolver resourcePatternResolver) {
-		this.staticPagePathFinder = new StaticPagePathFinder(resourcePatternResolver);
-		return this.staticPagePathFinder;
+		return new StaticPagePathFinder(resourcePatternResolver);
 	}
 
-	@Override
-	public void addViewControllers(ViewControllerRegistry registry) {
-		try {
-			for (StaticPagePathFinder.PagePaths paths : staticPagePathFinder.findPaths()) {
-				String urlPath = paths.getUrlPath();
-				registry.addViewController(urlPath).setViewName("pages" + paths.getFilePath());
-				if (!urlPath.isEmpty()) {
-					registry.addViewController(urlPath + "/").setViewName("pages" + paths.getFilePath());
+	@Configuration
+	public static class MvcConfigurer implements WebMvcConfigurer {
+
+		@Autowired
+		private StaticPagePathFinder staticPagePathFinder;
+
+		@Override
+		public void addViewControllers(ViewControllerRegistry registry) {
+			try {
+				for (StaticPagePathFinder.PagePaths paths : staticPagePathFinder.findPaths()) {
+					String urlPath = paths.getUrlPath();
+					registry.addViewController(urlPath).setViewName("pages" + paths.getFilePath());
+					if (!urlPath.isEmpty()) {
+						registry.addViewController(urlPath + "/").setViewName("pages" + paths.getFilePath());
+					}
 				}
+			} catch (IOException e) {
+				throw new RuntimeException("Unable to locate static pages: " + e.getMessage(), e);
 			}
-		}
-		catch (IOException e) {
-			throw new RuntimeException("Unable to locate static pages: " + e.getMessage(), e);
 		}
 	}
 

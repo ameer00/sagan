@@ -60,7 +60,7 @@ public class GuidesControllerTests {
 		given(this.githubClient.fetchOrgRepositories("spring-guides"))
 				.willReturn(Arrays.asList(restService, securingWeb));
 
-		this.mvc.perform(get("/guides/"))
+		this.mvc.perform(get("/guides"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$._embedded.guides[0].name").value("rest-service"))
 				.andExpect(jsonPath("$._embedded.guides[0].projects[0]").value("spring-boot"))
@@ -86,7 +86,7 @@ public class GuidesControllerTests {
 		given(this.githubClient.fetchOrgRepositories("spring-guides"))
 				.willReturn(Arrays.asList(deprecatedGuide));
 
-		this.mvc.perform(get("/guides/"))
+		this.mvc.perform(get("/guides"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$._embedded").doesNotExist());
 	}

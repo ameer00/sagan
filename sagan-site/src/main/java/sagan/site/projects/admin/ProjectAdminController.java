@@ -3,7 +3,7 @@ package sagan.site.projects.admin;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;

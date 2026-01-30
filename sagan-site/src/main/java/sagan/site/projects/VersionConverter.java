@@ -1,7 +1,7 @@
 package sagan.site.projects;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 /**
  * JPA {@link AttributeConverter} for converting {@link Version} to/from its {@code String} representation.

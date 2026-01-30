@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
-import javax.xml.bind.DatatypeConverter;
+import java.util.HexFormat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,11 +39,11 @@ public class TeamService {
     }
 
     public Optional<MemberProfile> updateMemberProfile(Long id, MemberProfile newProfile) {
-		return fetchMemberProfile(id).map(profile -> updateMemberProfile(newProfile, profile));
+        return fetchMemberProfile(id).map(profile -> updateMemberProfile(newProfile, profile));
     }
 
     public Optional<MemberProfile> updateMemberProfile(String username, MemberProfile updatedProfile) {
-		return fetchMemberProfile(username).map(profile -> updateMemberProfile(updatedProfile, profile));
+        return fetchMemberProfile(username).map(profile -> updateMemberProfile(updatedProfile, profile));
     }
 
     private MemberProfile updateMemberProfile(MemberProfile profile, MemberProfile existingProfile) {
@@ -73,12 +73,12 @@ public class TeamService {
 
     public MemberProfile createOrUpdateMemberProfile(Long githubId, OAuth2User oAuth2User) {
         MemberProfile profile = teamRepository.findByGithubId(githubId).orElseGet(() -> {
-			MemberProfile newProfile = new MemberProfile();
-			newProfile.setGithubId(githubId);
-			newProfile.setHidden(true);
-			return newProfile;
-		});
-		profile.setUsername(oAuth2User.getAttribute("login"));
+            MemberProfile newProfile = new MemberProfile();
+            newProfile.setGithubId(githubId);
+            newProfile.setHidden(true);
+            return newProfile;
+        });
+        profile.setUsername(oAuth2User.getAttribute("login"));
         profile.setGithubUsername(oAuth2User.getAttribute("login"));
         profile.setName(oAuth2User.getAttribute("name"));
         profile.setAvatarUrl(oAuth2User.getAttribute("avatar_url"));
@@ -91,15 +91,14 @@ public class TeamService {
 
     private void updateAvatarUrlwithGravatar(MemberProfile profile) {
         if (!StringUtils.isEmpty(profile.getGravatarEmail())) {
-			try {
-				MessageDigest digest = MessageDigest.getInstance("MD5");
-				digest.update(profile.getGravatarEmail().getBytes());
-				String hashedEmail = DatatypeConverter.printHexBinary(digest.digest());
-            	profile.setAvatarUrl(String.format("https://gravatar.com/avatar/%s", hashedEmail.toLowerCase()));
-			}
-			catch (NoSuchAlgorithmException e) {
-				logger.error("Could not find MD5 MessageDigest");
-			}
+            try {
+                MessageDigest digest = MessageDigest.getInstance("MD5");
+                digest.update(profile.getGravatarEmail().getBytes());
+                String hashedEmail = HexFormat.of().formatHex(digest.digest());
+                profile.setAvatarUrl(String.format("https://gravatar.com/avatar/%s", hashedEmail.toLowerCase()));
+            } catch (NoSuchAlgorithmException e) {
+                logger.error("Could not find MD5 MessageDigest");
+            }
         }
     }
 }

@@ -18,9 +18,13 @@ import org.springframework.core.annotation.AliasFor;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@AutoConfigureRestDocs(outputDir = "build/generated-snippets", uriScheme = "https", uriHost = "spring.io", uriPort = 443)
+@AutoConfigureRestDocs(	outputDir = "build/generated-snippets",
+						uriScheme = "https",
+						uriHost = "spring.io",
+						uriPort = 443)
 @WebMvcTest
-@Import({ModelMapperConfig.class, TestSecurityConfig.class})
+@Import({ ModelMapperConfig.class, TestSecurityConfig.class, sagan.site.SecurityConfig.class,
+		sagan.site.MvcConfig.class })
 public @interface WebApiTest {
 
 	@AliasFor(annotation = WebMvcTest.class)
