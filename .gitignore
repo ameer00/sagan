@@ -51,3 +51,7 @@ sagan.java.hsp
 jspm_packages/
 npm-debug.log
 .cram/
+
+*.log
+.gemini/
+gha-creds-*.json
