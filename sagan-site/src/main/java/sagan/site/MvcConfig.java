@@ -3,26 +3,31 @@ package sagan.site;
 import java.io.IOException;
 
 import sagan.site.support.StaticPagePathFinder;
+import sagan.site.support.ThymeleafRequestInterceptor;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Site-wide MVC infrastructure configuration. See also {@link SiteApplication} where certain
- * additional web infrastructure is configured.
+ * Site-wide MVC infrastructure configuration. See also {@link SiteApplication} where
+ * certain additional web infrastructure is configured.
  */
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
-	private StaticPagePathFinder staticPagePathFinder;
+	private final StaticPagePathFinder staticPagePathFinder;
+	private final ThymeleafRequestInterceptor thymeleafRequestInterceptor;
 
-	@Bean
-	public StaticPagePathFinder staticPagePathFinder(ResourcePatternResolver resourcePatternResolver) {
-		this.staticPagePathFinder = new StaticPagePathFinder(resourcePatternResolver);
-		return this.staticPagePathFinder;
+	public MvcConfig(	StaticPagePathFinder staticPagePathFinder,
+						ThymeleafRequestInterceptor thymeleafRequestInterceptor) {
+		this.staticPagePathFinder = staticPagePathFinder;
+		this.thymeleafRequestInterceptor = thymeleafRequestInterceptor;
+	}
+
+	@Override
+	public void addInterceptors(org.springframework.web.servlet.config.annotation.InterceptorRegistry registry) {
+		registry.addInterceptor(thymeleafRequestInterceptor);
 	}
 
 	@Override
@@ -35,8 +40,7 @@ public class MvcConfig implements WebMvcConfigurer {
 					registry.addViewController(urlPath + "/").setViewName("pages" + paths.getFilePath());
 				}
 			}
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			throw new RuntimeException("Unable to locate static pages: " + e.getMessage(), e);
 		}
 	}

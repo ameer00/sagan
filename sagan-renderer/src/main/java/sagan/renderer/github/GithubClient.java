@@ -25,7 +25,6 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -50,7 +49,8 @@ public class GithubClient {
 
 	private static final String REPO_ZIPBALL_PATH = REPO_INFO_PATH + "/zipball";
 
-	private static final MediaType GITHUB_PREVIEW_TYPE = MediaType.parseMediaType("application/vnd.github.mercy-preview+json");
+	private static final MediaType GITHUB_PREVIEW_TYPE = MediaType
+			.parseMediaType("application/vnd.github.mercy-preview+json");
 
 	private final RestTemplate restTemplate;
 
@@ -63,8 +63,7 @@ public class GithubClient {
 			this.restTemplate = restTemplateBuilder
 					.additionalInterceptors(new GithubAppTokenInterceptor(properties.getGithub().getToken()))
 					.build();
-		}
-		else {
+		} else {
 			this.logger.warn("GitHub API access will be rate-limited at 60 req/hour");
 			this.restTemplate = restTemplateBuilder.build();
 		}
@@ -72,8 +71,9 @@ public class GithubClient {
 
 	/**
 	 * Download a repository as a zipball
+	 * 
 	 * @param organization the github organization name
-	 * @param repository the repository name
+	 * @param repository   the repository name
 	 * @return the zipball as raw bytes
 	 */
 	public byte[] downloadRepositoryAsZipball(String organization, String repository) {
@@ -81,14 +81,14 @@ public class GithubClient {
 			byte[] response = this.restTemplate.getForObject(REPO_ZIPBALL_PATH,
 					byte[].class, organization, repository);
 			return response;
-		}
-		catch (HttpClientErrorException ex) {
+		} catch (HttpClientErrorException ex) {
 			throw new GithubResourceNotFoundException(organization, ex);
 		}
 	}
 
 	/**
 	 * Lists all the repositories available under the given organization
+	 * 
 	 * @param organization the github organization name
 	 * @return the list of all repositories under that organization
 	 */
@@ -106,7 +106,8 @@ public class GithubClient {
 
 	/**
 	 * Fetch repository information under the given organization
-	 * @param organization the github organization name
+	 * 
+	 * @param organization   the github organization name
 	 * @param repositoryName the github repository name
 	 * @return the repository information
 	 */
@@ -117,8 +118,7 @@ public class GithubClient {
 			Assert.state(repository.getFullName().contains(repositoryName),
 					() -> "Repository [" + repositoryName + "] redirected to [" + repository.getFullName() + "]");
 			return repository;
-		}
-		catch (HttpClientErrorException | IllegalStateException ex) {
+		} catch (HttpClientErrorException | IllegalStateException ex) {
 			throw new GithubResourceNotFoundException(organization, repositoryName, ex);
 		}
 	}

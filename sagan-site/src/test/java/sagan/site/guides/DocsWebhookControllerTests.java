@@ -1,9 +1,9 @@
 package sagan.site.guides;
 
-
 import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
+import sagan.site.SecurityConfig;
 import sagan.site.TestSecurityConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
  * Integration tests for {@link DocsWebhookController}.
  */
 @WebMvcTest(value = DocsWebhookController.class, properties = "sagan.site.github.webhook-token=accesstoken")
-@Import(TestSecurityConfig.class)
+@Import({ SecurityConfig.class, TestSecurityConfig.class })
 public class DocsWebhookControllerTests {
 
 	@MockBean
@@ -66,7 +66,8 @@ public class DocsWebhookControllerTests {
 				.header("X-GitHub-Event", "ping")
 				.content(getTestPayload("pingWebhook")))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().string("{ \"message\": \"Successfully processed ping event\" }"));
+				.andExpect(MockMvcResultMatchers.content().string(
+						"{ \"message\": \"Successfully processed ping event\" }"));
 	}
 
 	@Test
@@ -88,7 +89,8 @@ public class DocsWebhookControllerTests {
 				.header("X-GitHub-Event", "push")
 				.content(getTestPayload("pushGettingStarted")))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().string("{ \"message\": \"Successfully processed update\" }"));
+				.andExpect(MockMvcResultMatchers.content().string(
+						"{ \"message\": \"Successfully processed update\" }"));
 		verify(this.gettingStartedGuides, times(1)).evictFromCache("test-guide");
 	}
 
@@ -100,7 +102,8 @@ public class DocsWebhookControllerTests {
 				.header("X-GitHub-Event", "push")
 				.content(getTestPayload("pushTutorial")))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().string("{ \"message\": \"Successfully processed update\" }"));
+				.andExpect(MockMvcResultMatchers.content().string(
+						"{ \"message\": \"Successfully processed update\" }"));
 		verify(this.tutorials, times(1)).evictFromCache("test-guide");
 	}
 
@@ -112,10 +115,10 @@ public class DocsWebhookControllerTests {
 				.header("X-GitHub-Event", "push")
 				.content(getTestPayload("pushTopical")))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().string("{ \"message\": \"Successfully processed update\" }"));
+				.andExpect(MockMvcResultMatchers.content().string(
+						"{ \"message\": \"Successfully processed update\" }"));
 		verify(this.topicals, times(1)).evictFromCache("test-guide");
 	}
-
 
 	private String getTestPayload(String fileName) throws Exception {
 		ClassPathResource resource = new ClassPathResource(fileName + ".json", getClass());

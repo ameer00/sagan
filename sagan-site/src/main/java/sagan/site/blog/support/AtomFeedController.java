@@ -1,6 +1,6 @@
 package sagan.site.blog.support;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import sagan.site.blog.Post;
 import sagan.site.blog.PostCategory;

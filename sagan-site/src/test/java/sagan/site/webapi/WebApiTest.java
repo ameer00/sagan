@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import sagan.site.ModelMapperConfig;
+import sagan.site.SecurityConfig;
 import sagan.site.TestSecurityConfig;
 
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -18,9 +19,12 @@ import org.springframework.core.annotation.AliasFor;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@AutoConfigureRestDocs(outputDir = "build/generated-snippets", uriScheme = "https", uriHost = "spring.io", uriPort = 443)
+@AutoConfigureRestDocs(	outputDir = "build/generated-snippets",
+						uriScheme = "https",
+						uriHost = "spring.io",
+						uriPort = 443)
 @WebMvcTest
-@Import({ModelMapperConfig.class, TestSecurityConfig.class})
+@Import({ ModelMapperConfig.class, SecurityConfig.class, TestSecurityConfig.class })
 public @interface WebApiTest {
 
 	@AliasFor(annotation = WebMvcTest.class)
